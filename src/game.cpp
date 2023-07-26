@@ -1,6 +1,6 @@
 #include "game.h"
 #include <random>
-
+#include <iostream>
 Game::Game()
 {
     grid = Grid();
@@ -93,8 +93,16 @@ bool Game::IsBlockOutside()
 
     for (Position item : tiles)
     {
-        if (grid.IsCellOutside(item.row, item.col))
-            return true;
+        try
+        {
+
+            if (grid.IsCellOutside(item.row, item.col))
+                return true;
+        }
+        catch (const std::exception &e)
+        {
+            std::cout << "Error Caught\n";
+        }
     }
     return false;
 }

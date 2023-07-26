@@ -1,13 +1,29 @@
 #include <raylib.h>
 #include "game.h"
 
+class Screen
+{
+    static Color bg;
+
+public:
+    static void setBg()
+    {
+        ClearBackground(bg);
+    }
+
+    static void setScreen()
+    {
+        InitWindow(300, 600, "Tetris Game");
+        SetTargetFPS(60);
+    }
+};
+
+Color Screen ::bg = {44, 44, 127, 255};
+
 int main()
 {
 
-    Color darkBlue = {44, 44, 127, 255};
-
-    InitWindow(300, 600, "Tetris");
-    SetTargetFPS(60);
+    Screen::setScreen();
 
     Game game = Game();
 
@@ -16,7 +32,7 @@ int main()
         game.HandleInput();
         BeginDrawing();
 
-        ClearBackground(darkBlue);
+        Screen::setBg();
 
         game.Draw();
 
