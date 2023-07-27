@@ -10,7 +10,7 @@ class Block
 public:
     Block();
 
-    void Draw();
+    void Draw(int offsetX, int offsetY);
 
     void Move(int row, int columns);
 
