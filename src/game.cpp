@@ -20,6 +20,7 @@ Block Game::GetRandomBlock()
     int randomIndex = rand() % blocks.size();
 
     Block block = blocks[randomIndex];
+    // so that next time the method is called, same block will not be available
     blocks.erase(blocks.begin() + randomIndex);
 
     return block;
@@ -99,9 +100,9 @@ bool Game::IsBlockOutside()
             if (grid.IsCellOutside(item.row, item.col))
                 return true;
         }
-        catch (const std::exception &e)
+        catch (...)
         {
-            std::cout << "Error Caught\n";
+            std::cout << "Exception Caught\n";
         }
     }
     return false;

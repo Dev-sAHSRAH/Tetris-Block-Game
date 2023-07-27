@@ -2,6 +2,7 @@
 #include "grid.h"
 #include "blocks.cpp"
 
+// This class will serve as a conatiner for all elements of our game.
 class Game
 {
 public:

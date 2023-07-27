@@ -1,4 +1,5 @@
-#pragma once // this ensure this header files is included only once
+// this ensure this header files is included only once in compilation
+#pragma once
 
 #include <vector>
 #include <raylib.h>
