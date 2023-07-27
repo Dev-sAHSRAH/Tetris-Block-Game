@@ -7,6 +7,7 @@ Game::Game()
     blocks = GetAllBlocks();
     currentBlock = GetRandomBlock();
     nextBlock = GetRandomBlock();
+    gameOver = false;
 }
 
 Block Game::GetRandomBlock()
@@ -48,6 +49,13 @@ void Game::Draw()
 void Game::HandleInput()
 {
     int keyPressed = GetKeyPressed();
+
+    if (gameOver and keyPressed != 0)
+    {
+        gameOver = false;
+        Reset();
+    }
+
     switch (keyPressed)
     {
     case KEY_LEFT:
@@ -60,31 +68,45 @@ void Game::HandleInput()
     case KEY_DOWN:
         MoveBlockDown();
         break;
+    case KEY_UP:
+        RotateBlock();
+        break;
     }
 }
 
 void Game::MoveBlockLeft()
 {
-    currentBlock.Move(0, -1);
-    if (IsBlockOutside())
+    if (!gameOver)
     {
-        currentBlock.Move(0, 1);
+        currentBlock.Move(0, -1);
+        if (IsBlockOutside() or BlockFits() == false)
+        {
+            currentBlock.Move(0, 1);
+        }
     }
 }
 void Game::MoveBlockRight()
 {
-    currentBlock.Move(0, 1);
-    if (IsBlockOutside())
+    if (!gameOver)
     {
-        currentBlock.Move(0, -1);
+        currentBlock.Move(0, 1);
+        if (IsBlockOutside() or BlockFits() == false)
+        {
+            currentBlock.Move(0, -1);
+        }
     }
 }
 void Game::MoveBlockDown()
 {
-    currentBlock.Move(1, 0);
-    if (IsBlockOutside())
+    if (!gameOver)
     {
-        currentBlock.Move(-1, 0);
+
+        currentBlock.Move(1, 0);
+        if (IsBlockOutside() or BlockFits() == false)
+        {
+            currentBlock.Move(-1, 0);
+            LockBlock();
+        }
     }
 }
 
@@ -106,4 +128,60 @@ bool Game::IsBlockOutside()
         }
     }
     return false;
+}
+
+void Game::RotateBlock()
+{
+    if (!gameOver)
+    {
+
+        currentBlock.Rotate();
+        if (IsBlockOutside() or BlockFits() == false)
+        {
+            currentBlock.undoRotation();
+        }
+    }
+}
+
+void Game::LockBlock()
+{
+    std::vector<Position> tiles = currentBlock.GetCellPositions();
+    for (Position item : tiles)
+    {
+        grid.grid[item.row][item.col] = currentBlock.id;
+    }
+    currentBlock = nextBlock;
+    if (BlockFits() == false)
+    {
+        gameOver = true;
+    }
+    nextBlock = GetRandomBlock();
+    grid.ClearFullRows();
+    // int rowsCleared = grid.ClearFullRows();
+    // if (rowsCleared > 0)
+    // {
+    //     PlaySound(clearSound);
+    //     UpdateScore(rowsCleared, 0);
+    // }
+}
+
+bool Game::BlockFits()
+{
+    std::vector<Position> tiles = currentBlock.GetCellPositions();
+    for (Position item : tiles)
+    {
+        if (grid.IsCellEmpty(item.row, item.col) == false)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+void Game::Reset()
+{
+    grid.Initialize();
+    blocks = GetAllBlocks();
+    currentBlock = GetRandomBlock();
+    nextBlock = GetRandomBlock();
 }

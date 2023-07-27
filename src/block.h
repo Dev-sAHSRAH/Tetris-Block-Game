@@ -16,6 +16,10 @@ public:
 
     std::vector<Position> GetCellPositions();
 
+    void Rotate();
+
+    void undoRotation();
+
     int id;
 
     std::map<int, std::vector<Position>> cells;

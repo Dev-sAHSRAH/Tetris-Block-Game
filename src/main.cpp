@@ -37,6 +37,31 @@ public:
     }
 };
 
+class Time
+{
+private:
+    double lastUpdateTime = 0;
+
+    friend class EventManage;
+};
+
+Time t;
+
+class EventManage
+{
+public:
+    static bool EventTriggered(double interval)
+    {
+        double currentTime = GetTime();
+        if (currentTime - t.lastUpdateTime >= interval)
+        {
+            t.lastUpdateTime = currentTime;
+            return true;
+        }
+        return false;
+    }
+};
+
 // Colors in raylib - struct Color = {r,g,b,alpha};
 Color *Screen::bg = new Color{44, 44, 127, 255};
 
@@ -51,6 +76,12 @@ int main()
     while (WindowShouldClose() == false)
     {
         game.HandleInput();
+
+        if (EventManage::EventTriggered(0.5))
+        {
+            game.MoveBlockDown();
+        }
+
         // To create a blank canvas
         BeginDrawing();
 
