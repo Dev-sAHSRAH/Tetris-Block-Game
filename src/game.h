@@ -1,8 +1,7 @@
 #pragma once
 #include "grid.h"
 #include "blocks.cpp"
-
-// This class will serve as a conatiner for all elements of our game.
+#include "SoundManager.h"
 class Game
 {
 public:
@@ -11,10 +10,10 @@ public:
     void Draw();
     void HandleInput();
     void MoveBlockDown();
-
     bool gameOver;
     int score;
     Music music;
+    // void UpdateMusicStream();
 
 private:
     void MoveBlockLeft();
@@ -29,8 +28,11 @@ private:
     void UpdateScore(int linesCleared, int moveDownPoints);
     Grid grid;
     std::vector<Block> blocks;
+
+    SoundManager *soundManager;
+
     Block currentBlock;
     Block nextBlock;
-    Sound rotateSound;
-    Sound clearSound;
+    // Sound rotateSound;
+    // Sound clearSound;
 };

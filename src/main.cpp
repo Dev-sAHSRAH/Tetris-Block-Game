@@ -76,7 +76,6 @@ int main()
     // Game loop
     while (WindowShouldClose() == false)
     {
-        UpdateMusicStream(game.music);
 
         game.HandleInput();
 

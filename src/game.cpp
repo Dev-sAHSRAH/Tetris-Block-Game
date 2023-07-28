@@ -9,19 +9,22 @@ Game::Game()
     nextBlock = GetRandomBlock();
     gameOver = false;
     score = 0;
-    InitAudioDevice(); // intialzes the audio to device on which sound is played
-    music = LoadMusicStream("Sounds/music.mp3");
-    PlayMusicStream(music);
-    rotateSound = LoadSound("Sounds/rotate.mp3");
-    clearSound = LoadSound("Sounds/clear.mp3");
+    InitAudioDevice();
+    soundManager = new SoundManager();
+
+    // UpdateMusicStream(soundManager->music);
+    // rotateSound = LoadSound("Sounds/rotate.mp3");
+    // clearSound = LoadSound("Sounds/clear.mp3");
 }
 
 Game::~Game()
 {
-    UnloadSound(rotateSound);
-    UnloadSound(clearSound);
-    UnloadMusicStream(music);
+    // UnloadSound(rotateSound);
+    // UnloadSound(clearSound);
+    // UnloadMusicStream(music);
     CloseAudioDevice();
+
+    delete soundManager;
 }
 
 Block Game::GetRandomBlock()
@@ -146,7 +149,7 @@ void Game::RotateBlock()
         }
         else
         {
-            PlaySound(rotateSound);
+            soundManager->PlayRotateSound();
         }
     }
 }
@@ -167,7 +170,7 @@ void Game::LockBlock()
     int rowsCleared = grid.ClearFullRows();
     if (rowsCleared > 0)
     {
-        PlaySound(clearSound);
+        soundManager->PlayClearSound();
         UpdateScore(rowsCleared, 0);
     }
 }
