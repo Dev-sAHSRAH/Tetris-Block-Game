@@ -1,5 +1,6 @@
 #include "game.h"
 #include <random>
+#include <iostream>
 
 Game::Game()
 {
@@ -128,11 +129,18 @@ void Game::MoveBlockDown()
 bool Game::IsBlockOutside()
 {
     std::vector<Position> tiles = currentBlock.GetCellPositions();
+
     for (Position item : tiles)
     {
-        if (grid.IsCellOutside(item.row, item.col))
+        try
         {
-            return true;
+
+            if (grid.IsCellOutside(item.row, item.col))
+                return true;
+        }
+        catch (...)
+        {
+            std::cout << "Exception Caught\n";
         }
     }
     return false;
